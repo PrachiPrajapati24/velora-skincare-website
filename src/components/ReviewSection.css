@@ -1,0 +1,282 @@
+.velora-review-section {
+  width: 100%;
+  padding: 120px 0 140px;
+  background: rgba(255, 255, 255, 0.83);
+  position: relative;
+  overflow: hidden;
+}
+
+.review-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+/* Header Styles */
+.review-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.review-label {
+  text-transform: uppercase;
+  font-size: 2rem;
+  color: #999;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  display: block;
+}
+
+/* Content Wrapper */
+.review-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  position: relative;
+  min-height: 400px;
+}
+
+/* Navigation Arrows */
+.nav-arrow {
+  background: transparent;
+  border: none;
+  color: #999;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.nav-arrow:hover {
+  color: #333;
+  transform: translateX(0);
+}
+
+.nav-arrow-left:hover {
+  transform: translateX(-5px);
+}
+
+.nav-arrow-right:hover {
+  transform: translateX(5px);
+}
+
+.nav-arrow span {
+  display: block;
+}
+
+/* Main Testimonial */
+.testimonial-main {
+  max-width: 800px;
+  text-align: center;
+  position: relative;
+}
+
+/* Smooth slide-up animation for text */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in animation for author section */
+@keyframes fadeInDelay {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUpFade 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-fade-in {
+  animation: fadeInDelay 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+}
+
+.testimonial-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.5rem;
+  line-height: 1.5;
+  color: #1a1a1a;
+  margin-bottom: 60px;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  position: relative;
+}
+
+.quote-mark {
+  color: #ccc;
+  font-size: 3rem;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+/* Author Section */
+.testimonial-author {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.author-name-section {
+  text-align: left;
+}
+
+.author-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 6px 0;
+  letter-spacing: 0.15em;
+}
+
+.author-email {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.85rem;
+  color: #999;
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* Rating Badge */
+.rating-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #26796e;
+  border-radius: 50px;
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.rating-badge:hover {
+  transform: scale(1.05);
+}
+
+.star-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.rating-number {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .review-content-wrapper {
+    gap: 60px;
+  }
+
+  .testimonial-text {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .velora-review-section {
+    padding: 80px 0 100px;
+  }
+
+  .review-container {
+    padding: 0 30px;
+  }
+
+  .review-header {
+    margin-bottom: 60px;
+  }
+
+  .review-content-wrapper {
+    flex-direction: column;
+    gap: 40px;
+    min-height: auto;
+  }
+
+  .nav-arrow {
+    order: 3;
+  }
+
+  .nav-arrow-left {
+    order: 2;
+  }
+
+  .testimonial-main {
+    order: 1;
+  }
+
+  .testimonial-text {
+    font-size: 1.6rem;
+    margin-bottom: 40px;
+  }
+
+  .testimonial-author {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .author-name-section {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .review-container {
+    padding: 0 20px;
+  }
+
+  .testimonial-text {
+    font-size: 1.4rem;
+  }
+
+  .quote-mark {
+    font-size: 2.5rem;
+  }
+
+  .author-name {
+    font-size: 0.8rem;
+  }
+
+  .author-email {
+    font-size: 0.75rem;
+  }
+
+  .nav-arrow {
+    font-size: 0.7rem;
+  }
+
+  .rating-badge {
+    padding: 6px 14px;
+  }
+
+  .star-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .rating-number {
+    font-size: 0.85rem;
+  }
+}

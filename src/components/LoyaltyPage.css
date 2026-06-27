@@ -1,0 +1,578 @@
+.loyalty-page {
+  padding-bottom: 80px;
+  background-color: #fdfcfb;
+  min-height: 80vh;
+  font-family: 'Playfair Display', serif;
+}
+
+.loyalty-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section */
+.loyalty-hero {
+  background: linear-gradient(135deg, #fbf7f2 0%, #f4efea 100%);
+  padding: 70px 0;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 50px;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #56876D;
+  background-color: rgba(86, 135, 109, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.loyalty-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #222;
+  margin: 0 0 10px 0;
+}
+
+.loyalty-hero p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Points Status Box */
+.points-status-section {
+  margin-bottom: 60px;
+}
+
+.points-status-card {
+  background: white;
+  border: 1px solid #f0eae1;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  text-align: left;
+}
+
+.status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.status-lbl {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  color: #999;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-header h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #333;
+  margin: 4px 0 0 0;
+}
+
+.tier-badge-large {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+
+.status-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  border-top: 1px solid #f9f5f0;
+  padding-top: 30px;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-val {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #333;
+  line-height: 1;
+}
+
+.stat-lbl {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 6px;
+}
+
+.benefit-box .stat-val {
+  color: #56876D;
+}
+
+/* Points Login Prompt */
+.points-login-prompt {
+  background: white;
+  border: 1px solid #f0eae1;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.points-login-prompt svg {
+  color: #56876D;
+  margin-bottom: 15px;
+}
+
+.points-login-prompt h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.points-login-prompt p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: #666;
+  max-width: 450px;
+  margin: 0 auto 25px auto;
+  line-height: 1.4;
+}
+
+.loyalty-login-btn {
+  background-color: #56876D;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.loyalty-login-btn:hover {
+  background-color: #436954;
+}
+
+/* How It Works steps */
+.how-it-works {
+  margin-bottom: 70px;
+  text-align: center;
+}
+
+.how-it-works h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #222;
+  margin-bottom: 40px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.how-step {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #f0eae1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.step-num-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #fcfbfa;
+  border: 1px solid #e0d5c1;
+  color: #695e50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.how-step h3 {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.how-step p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Rewards Catalog Section */
+.rewards-catalog {
+  text-align: center;
+}
+
+.rewards-catalog h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.catalog-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 30px;
+}
+
+.reward-card-item {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #f0eae1;
+  padding: 30px;
+  display: flex;
+  gap: 25px;
+  text-align: left;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.reward-card-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+.reward-card-item.locked {
+  opacity: 0.7;
+}
+
+.reward-icon-box {
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background-color: #fdfcfb;
+  border: 1px solid #f5efeb;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.reward-info-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.reward-cost-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #56876D;
+  background-color: #f7fdfa;
+  border: 1px solid #d4ede0;
+  padding: 3px 10px;
+  border-radius: 6px;
+  width: fit-content;
+  margin-bottom: 12px;
+}
+
+.reward-info-details h3 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #333;
+  margin: 0 0 6px 0;
+}
+
+.reward-info-details p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.4;
+  margin: 0 0 20px 0;
+  min-height: 40px;
+}
+
+.redeem-btn {
+  background-color: #56876D;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.redeem-btn:hover {
+  background-color: #436954;
+}
+
+.redeem-btn.disabled {
+  background-color: #f5f5f5;
+  color: #aaa;
+  cursor: not-allowed;
+  border: 1px solid #eee;
+}
+
+.redeem-btn.login-required {
+  background-color: #333;
+}
+
+.redeem-btn.login-required:hover {
+  background-color: #000;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .status-stats-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding-top: 20px;
+  }
+  
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .rewards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .status-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .points-status-card {
+    padding: 24px 16px;
+  }
+  
+  .reward-card-item {
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+  }
+}
+
+/* =========================================================
+   Coupon Toast — replaces the blocking modal
+   ========================================================= */
+.coupon-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  width: 360px;
+  max-width: calc(100vw - 2rem);
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 1.4rem 1.5rem 1rem;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-family: 'Poppins', 'Playfair Display', sans-serif;
+  overflow: hidden;
+}
+
+/* Close button */
+.coupon-toast__close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+}
+.coupon-toast__close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+/* Header row */
+.coupon-toast__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  padding-right: 2rem;
+}
+.coupon-toast__celebrate {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.coupon-toast__eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a78bfa;
+  margin: 0 0 3px;
+}
+.coupon-toast__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+  color: #f0f0f0;
+  line-height: 1.3;
+}
+
+/* Code row */
+.coupon-toast__code-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px dashed rgba(167, 139, 250, 0.5);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 0.75rem;
+}
+.coupon-toast__code {
+  flex: 1;
+  font-family: 'Courier New', monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #a78bfa;
+}
+.coupon-toast__copy {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: #fff;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.coupon-toast__copy:hover {
+  background: linear-gradient(135deg, #6d28d9, #5b21b6);
+  transform: scale(1.04);
+}
+.coupon-toast__copy--done {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+.coupon-toast__copy--done:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+}
+
+/* Hint */
+.coupon-toast__hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 0.75rem;
+}
+
+/* Progress countdown bar */
+.coupon-toast__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
+}
+.coupon-toast__progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #7c3aed, #a78bfa);
+  width: 100%;
+  transform-origin: left;
+  animation: toastCountdown linear forwards;
+}
+@keyframes toastCountdown {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+/* Enter / exit animations */
+@keyframes couponSlideIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+@keyframes couponSlideOut {
+  from { opacity: 1; transform: translateY(0)   scale(1);    }
+  to   { opacity: 0; transform: translateY(16px) scale(0.96); }
+}
+.coupon-toast--enter {
+  animation: couponSlideIn 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.coupon-toast--exit {
+  animation: couponSlideOut 0.36s ease-in forwards;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .coupon-toast {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+  }
+}

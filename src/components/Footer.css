@@ -1,0 +1,778 @@
+.velora-footer {
+  width: 100%;
+  background: #fafafa;
+  position: relative;
+}
+
+/* Sliding Image Gallery */
+.footer-gallery {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 40px 0 60px;
+  background: #ffffff;
+}
+
+.gallery-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+}
+
+.gallery-item {
+  flex-shrink: 0;
+  width: 180px;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(30%);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gallery-item:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
+/* Footer Content */
+.footer-content {
+  background: #f5f5f3;
+  padding: 80px 0 0;
+  position: relative;
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
+  margin-bottom: 60px;
+}
+
+/* Brand Section */
+.footer-brand {
+  flex: 1;
+  max-width: 400px;
+}
+
+.footer-logo {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: #1a1a1a;
+  margin: 0 0 24px 0;
+}
+
+.footer-description {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #7d8184;
+  margin: 0 0 32px 0;
+}
+
+/* CTA Buttons */
+.footer-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 100%;
+  max-width: 240px;
+}
+
+.footer-btn-primary {
+  background: #26796e;
+  color: #ffffff;
+  border-color: #26796e;
+}
+
+.footer-btn-primary:hover {
+  background: #1f6259;
+  border-color: #1f6259;
+  transform: translateX(4px);
+}
+
+.footer-btn-secondary {
+  background: transparent;
+  color: #1a1a1a;
+  border-color: rgba(26, 26, 26, 0.2);
+}
+
+.footer-btn-secondary:hover {
+  background: rgba(26, 26, 26, 0.05);
+  border-color: #1a1a1a;
+  transform: translateX(4px);
+}
+
+.footer-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.footer-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* Navigation Sections */
+.footer-nav {
+  display: flex;
+  gap: 80px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.footer-nav-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-nav-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.footer-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-nav-list li a {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  color: #7d8184;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: inline-block;
+}
+
+.footer-nav-list li a:hover {
+  color: #26796e;
+}
+
+/* Social Media */
+.footer-social {
+  display: flex;
+  gap: 16px;
+}
+
+.social-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(38, 121, 110, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #26796e;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  background: #26796e;
+  color: #ffffff;
+  transform: translateY(-4px);
+}
+
+.social-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+  position: absolute;
+  right: 60px;
+  top: -24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(26, 26, 26, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: #1a1a1a;
+}
+
+.scroll-to-top:hover {
+  background: #26796e;
+  color: #ffffff;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(38, 121, 110, 0.2);
+}
+
+/* Bottom Bar */
+.footer-bottom {
+  border-top: 1px solid rgba(26, 26, 26, 0.1);
+  padding: 32px 0;
+}
+
+.footer-bottom .footer-container {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+  gap: 20px;
+}
+
+.footer-copyright {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.9rem;
+  color: #999;
+  margin: 0;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-links a {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.9rem;
+  color: #7d8184;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #26796e;
+}
+
+.separator {
+  color: #ccc;
+  user-select: none;
+}
+
+/* Newsletter Column styling */
+.footer-newsletter-column {
+  max-width: 280px;
+}
+
+.newsletter-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  color: #7d8184;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.footer-newsletter-form {
+  display: flex;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.15);
+  padding-bottom: 5px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.newsletter-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.95rem;
+  color: #333;
+  padding: 8px 0;
+  flex: 1;
+  width: 100%;
+}
+
+.newsletter-input::placeholder {
+  color: #bbb;
+}
+
+.newsletter-btn {
+  border: none;
+  background: transparent;
+  color: #26796e;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 5px;
+  transition: transform 0.2s;
+}
+
+.newsletter-btn:hover {
+  transform: translateX(3px);
+}
+
+.newsletter-success {
+  font-family: "Cormorant Garamond", serif;
+  color: #26796e;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background: rgba(38, 121, 110, 0.08);
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(38, 121, 110, 0.15);
+  margin-top: 10px;
+  text-align: left;
+}
+
+.newsletter-error {
+  font-family: "Cormorant Garamond", serif;
+  color: #c53030;
+  font-size: 0.88rem;
+  margin: 5px 0 0 0;
+  text-align: left;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 60px;
+    padding: 0 40px;
+  }
+
+  .footer-brand {
+    max-width: 100%;
+  }
+
+  .footer-nav {
+    gap: 60px;
+    justify-content: flex-start;
+  }
+
+  .gallery-item {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-gallery {
+    padding: 30px 0 40px;
+  }
+
+  .gallery-item {
+    width: 140px;
+    height: 140px;
+  }
+
+  .footer-content {
+    padding: 60px 0 0;
+  }
+
+  .footer-container {
+    padding: 0 30px;
+    gap: 50px;
+  }
+
+  .footer-nav {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .footer-buttons {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .footer-btn {
+    max-width: none;
+    flex: 1;
+    font-size: 0.9rem;
+    padding: 12px 20px;
+  }
+
+  .scroll-to-top {
+    right: 30px;
+  }
+
+  .footer-bottom .footer-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-item {
+    width: 120px;
+    height: 120px;
+  }
+
+  .footer-container {
+    padding: 0 20px;
+  }
+
+  .footer-logo {
+    font-size: 2rem;
+  }
+
+  .footer-buttons {
+    flex-direction: column;
+  }
+
+  .footer-social {
+    gap: 12px;
+  }
+
+  .social-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .scroll-to-top {
+    right: 20px;
+    width: 44px;
+    height: 44px;
+  }
+}
+/* Button styling for navigation links */
+.footer-nav-list button,
+.footer-links button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.3s ease;
+}
+
+.footer-nav-list button:hover,
+.footer-links button:hover {
+  color: #26796e;
+}
+
+.footer-links button {
+  text-align: center;
+}
+/* Button styling for navigation links */
+.footer-nav-list button,
+.footer-links button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.3s ease;
+}
+
+.footer-nav-list button:hover,
+.footer-links button:hover {
+  color: #26796e;
+}
+
+.footer-links button {
+  text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Contact Modal Overlay */
+.contact-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Split Screen Container */
+.contact-modal-split {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 85vh;
+  background: #fff;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+  position: relative;
+  animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Close Button */
+.contact-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact-close-btn:hover {
+  background: #fff;
+  transform: rotate(90deg);
+}
+
+.contact-close-btn svg {
+  width: 22px;
+  height: 22px;
+  color: #26796e;
+}
+
+/* Left Side - Branding */
+.contact-modal-left {
+  background: linear-gradient(135deg, rgba(38, 121, 110, 0.95) 0%, rgba(31, 98, 89, 0.95) 100%),
+              url('https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&q=80');
+  background-size: cover;
+  background-position: center;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  color: #fff;
+}
+
+.contact-left-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.contact-brand h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: 0.15em;
+}
+
+.contact-brand p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-style: italic;
+  margin: 0;
+}
+
+.contact-decorative-text {
+  text-align: center;
+  margin: 70px 0;
+}
+
+.contact-decorative-text h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4.5rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.25em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.contact-left-message {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.contact-left-message p {
+  margin-bottom: 16px;
+}
+
+.contact-note {
+  font-style: italic;
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Right Side - Form */
+.contact-modal-right {
+  background: #fcfaf8;
+  padding: 60px 50px;
+  overflow-y: auto;
+}
+
+.contact-right-content h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #333;
+  margin-bottom: 45px;
+  letter-spacing: 0.08em;
+}
+
+.contact-split-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.contact-split-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-split-group label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.contact-split-group input,
+.contact-split-group textarea {
+  width: 100%;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: #333;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.contact-split-group input:focus,
+.contact-split-group textarea:focus {
+  outline: none;
+  border-bottom-color: #26796e;
+}
+
+.contact-split-group input::placeholder,
+.contact-split-group textarea::placeholder {
+  color: #bbb;
+}
+
+.contact-split-group textarea {
+  resize: vertical;
+  min-height: 90px;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.contact-split-submit {
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border: 1.5px solid #c9a998;
+  border-radius: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #c9a998;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-top: 20px;
+}
+
+.contact-split-submit:hover {
+  background: #c9a998;
+  color: #fff;
+}
+
+/* Scrollbar */
+.contact-modal-right::-webkit-scrollbar {
+  width: 6px;
+}
+
+.contact-modal-right::-webkit-scrollbar-track {
+  background: rgba(38, 121, 110, 0.05);
+}
+
+.contact-modal-right::-webkit-scrollbar-thumb {
+  background: rgba(38, 121, 110, 0.3);
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .contact-modal-split {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+
+  .contact-modal-left {
+    display: none;
+  }
+
+  .contact-modal-right {
+    padding: 50px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-modal-right {
+    padding: 40px 30px;
+  }
+
+  .contact-right-content h2 {
+    font-size: 2rem;
+  }
+}

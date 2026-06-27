@@ -1,0 +1,482 @@
+.profile-page {
+  padding: 60px 0;
+  background-color: #fdfcfb;
+  min-height: 80vh;
+  font-family: 'Playfair Display', serif;
+}
+
+.profile-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid #f0eae1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.user-intro {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-align: left;
+}
+
+.profile-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #56876D;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 12px rgba(86, 135, 109, 0.2);
+}
+
+.user-intro h1 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin: 0 0 4px 0;
+  color: #222;
+}
+
+.user-since {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0;
+}
+
+.profile-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #fff5f5;
+  border: 1px solid #fecaca;
+  color: #c53030;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.profile-logout-btn:hover {
+  background-color: #c94a4a;
+  color: white;
+  border-color: #c94a4a;
+}
+
+/* Dashboard Grid */
+.profile-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 2.2fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.profile-card {
+  background: white;
+  border: 1px solid #f0eae1;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  text-align: left;
+}
+
+.card-icon-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.card-icon-header h3 {
+  font-size: 1.15rem;
+  font-weight: 400;
+  margin: 0;
+  color: #333;
+}
+
+/* Loyalty card */
+.loyalty-stats {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.points-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #376c4c;
+  line-height: 1;
+}
+
+.points-lbl {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.loyalty-tier-badge {
+  display: inline-block;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.tier-benefit-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.4;
+  margin: 15px 0;
+}
+
+.view-rewards-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #56876D;
+  color: #56876D;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-rewards-btn:hover {
+  background-color: #f7fdfa;
+}
+
+.profile-card .divider {
+  height: 1px;
+  background-color: #f5eedf;
+}
+
+/* Info card */
+.info-detail-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+}
+
+.info-row span {
+  color: #888;
+}
+
+.info-row strong {
+  color: #222;
+  word-break: break-all;
+  max-width: 160px;
+  text-align: right;
+}
+
+/* Main panel */
+.profile-main-panel {
+  background: white;
+  border: 1px solid #f0eae1;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  text-align: left;
+}
+
+.panel-tabs {
+  display: flex;
+  border-bottom: 1px solid #f0eae1;
+  margin-bottom: 25px;
+}
+
+.panel-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 12px 20px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.panel-tab:hover,
+.panel-tab.active {
+  color: #56876D;
+  border-bottom-color: #56876D;
+}
+
+/* Order cards */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.order-history-card {
+  border: 1px solid #f0eae1;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fdfcfb;
+}
+
+.order-card-header {
+  background-color: #f5efeb;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-meta-info {
+  display: flex;
+  gap: 30px;
+  text-align: left;
+  flex-wrap: wrap;
+}
+
+.order-meta-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.order-meta-info span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  color: #888;
+  letter-spacing: 0.05em;
+}
+
+.order-meta-info strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: #222;
+  word-break: break-all;
+}
+
+.order-price-tag {
+  color: #376c4c !important;
+  font-weight: 700 !important;
+}
+
+.order-status-badge {
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+.order-status-badge[data-status="processing"] {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.order-status-badge[data-status="shipped"] {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.order-status-badge[data-status="delivered"] {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+.order-status-badge[data-status="cancelled"] {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* Order items list */
+.order-card-items {
+  padding: 10px 24px;
+  background: white;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f9f5f0;
+}
+
+.order-item-row:last-child {
+  border-bottom: none;
+}
+
+.order-item-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #f0eae1;
+}
+
+.order-item-details {
+  flex: 1;
+  text-align: left;
+}
+
+.order-item-details h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 2px 0;
+}
+
+.order-item-details p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0;
+}
+
+.buy-again-btn {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #666;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.buy-again-btn:hover {
+  border-color: #56876D;
+  color: #56876D;
+  background-color: #f7fdfa;
+}
+
+/* Empty State */
+.no-orders-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.no-orders-box svg {
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.no-orders-box h3 {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.no-orders-box p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: #777;
+  max-width: 400px;
+  margin: 0 0 20px 0;
+  line-height: 1.4;
+}
+
+.shop-now-btn {
+  background-color: #56876D;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.shop-now-btn:hover {
+  background-color: #436954;
+}
+
+.loading-txt {
+  font-family: 'Cormorant Garamond', serif;
+  color: #666;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .profile-dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-header {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  .profile-logout-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .order-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .order-status-badge {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .order-meta-info {
+    gap: 15px 25px;
+  }
+}

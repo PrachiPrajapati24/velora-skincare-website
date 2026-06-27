@@ -1,0 +1,128 @@
+.notfound-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 75vh;
+  padding: 60px 20px;
+  background-color: #fdfcfb;
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+}
+
+.notfound-container {
+  max-width: 550px;
+}
+
+.notfound-number {
+  font-size: 8rem;
+  font-weight: 200;
+  line-height: 1;
+  color: #e8ddd4;
+  letter-spacing: -0.04em;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #d4c5b5, #e8ddd4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.notfound-title {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #222;
+  margin: 0 0 14px 0;
+}
+
+.notfound-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: #777;
+  line-height: 1.6;
+  margin: 0 0 40px 0;
+}
+
+.notfound-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 35px;
+}
+
+.notfound-home-btn {
+  background-color: #56876D;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notfound-home-btn:hover {
+  background-color: #436954;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(86, 135, 109, 0.22);
+}
+
+.notfound-shop-btn {
+  background-color: transparent;
+  border: 1px solid #56876D;
+  color: #56876D;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notfound-shop-btn:hover {
+  background-color: #f7fdfa;
+}
+
+.notfound-links {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: #999;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.notfound-links a {
+  color: #56876D;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.notfound-links a:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+.sep {
+  color: #ddd;
+}
+
+@media (max-width: 480px) {
+  .notfound-number {
+    font-size: 5rem;
+  }
+  
+  .notfound-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .notfound-home-btn,
+  .notfound-shop-btn {
+    width: 100%;
+  }
+}
