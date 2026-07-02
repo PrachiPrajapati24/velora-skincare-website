@@ -10,12 +10,14 @@ import product1 from "../assets/product1.jpg";
 import product2 from "../assets/product2.jpg";
 import product3 from "../assets/product3.jpg";
 import product4 from "../assets/product4.jpg";
+import product5 from "../assets/skincare1.jpg";
 
 const LOCAL_IMAGES = {
   "Velora Miraculous Retinol": product1,
   "Toner Velora Perfect Hydrating": product2,
   "Ampoule Velora Miraculous": product3,
-  "Sunscreen Velora": product4
+  "Sunscreen Velora": product4,
+  "Gentle Cleanser": product5
 };
 
 const ProductSection = () => {
@@ -32,12 +34,13 @@ const ProductSection = () => {
       try {
         const res = await api.get('/products');
         if (res.data.success) {
-          // Filter to get the 4 featured products
+          // Filter to get the 5 featured products
           const names = [
             "Velora Miraculous Retinol",
             "Toner Velora Perfect Hydrating",
             "Ampoule Velora Miraculous",
-            "Sunscreen Velora"
+            "Sunscreen Velora",
+            "Gentle Cleanser"
           ];
           const filtered = res.data.products.filter(p => names.includes(p.name));
           
@@ -48,7 +51,7 @@ const ProductSection = () => {
             setFeaturedProducts(ordered);
           } else {
             // Fallback if seeded list doesn't match
-            setFeaturedProducts(res.data.products.slice(0, 4));
+            setFeaturedProducts(res.data.products.slice(0, 5));
           }
         }
       } catch (error) {
@@ -91,7 +94,7 @@ const ProductSection = () => {
         <h2 className="product-list-title">Realise your dream skin with Velora</h2>
         <p className="product-list-subtitle">Skincare for Every Skin Type</p>
         <div className="product-list-grid">
-          {[1, 2, 3, 4].map(idx => (
+          {[1, 2, 3, 4, 5].map(idx => (
             <div className="product-card skeleton-card" key={idx}>
               <div className="skeleton-img"></div>
               <div className="skeleton-text title"></div>
@@ -118,6 +121,7 @@ const ProductSection = () => {
             <div
               className={`product-card ${isScalloped ? "scalloped" : ""}`}
               key={prod._id || prod.id}
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div
                 className="product-card-imgbox"
