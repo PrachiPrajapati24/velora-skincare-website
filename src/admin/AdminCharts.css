@@ -1,0 +1,94 @@
+.ad-charts-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.ad-charts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ad-time-filters {
+  display: flex;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 3px;
+}
+
+.ad-time-filters button {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 9px;
+  transition: all 0.2s;
+}
+
+.ad-time-filters button:hover {
+  color: var(--text);
+}
+
+.ad-time-filters button.active {
+  background-color: var(--green);
+  color: white;
+}
+
+.ad-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+.ad-chart-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  min-height: 380px;
+}
+
+.ad-chart-card.full-width-chart {
+  grid-column: 1 / -1;
+}
+
+.ad-chart-title {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.ad-chart-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+}
+
+.doughnut-wrapper {
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .ad-charts-grid {
+    grid-template-columns: 1fr;
+  }
+  .ad-chart-card {
+    min-height: 320px;
+  }
+}

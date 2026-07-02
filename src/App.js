@@ -7,6 +7,7 @@ import { useAuth } from './context/AuthContext';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
+import { AdminProvider } from './admin/AdminContext';
 
 // Layout Components
 import Navbar from './components/Navbar';
@@ -36,6 +37,10 @@ import TermsPage from './components/TermsPage';
 import PrivacyPage from './components/PrivacyPage';
 import NotFoundPage from './components/NotFoundPage';
 
+// Admin Components
+import AdminLogin from './admin/AdminLogin';
+import AdminDashboard from './admin/AdminDashboard';
+
 // Scroll to top on every route change
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -58,48 +63,57 @@ function HomePage() {
 }
 
 function App() {
+  const location = useLocation();
+  const isAdminPath = location.pathname.startsWith('/admin');
+
   return (
     <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <div className="App">
-            <ScrollToTop />
-            <Navbar />
-            <Routes>
-              {/* Home */}
-              <Route path="/" element={<HomePage />} />
+      <AdminProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <div className="App">
+              <ScrollToTop />
+              {!isAdminPath && <Navbar />}
+              <Routes>
+                {/* Home */}
+                <Route path="/" element={<HomePage />} />
 
-              {/* Products */}
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/product/:id" element={<ProductDetailPage />} />
+                {/* Products */}
+                <Route path="/products" element={<ProductsPage />} />
+                <Route path="/product/:id" element={<ProductDetailPage />} />
 
-              {/* Auth — /profile shows AuthPage if logged out, ProfilePage if logged in */}
-              <Route path="/profile" element={<ProfileOrAuthPage />} />
+                {/* Auth — /profile shows AuthPage if logged out, ProfilePage if logged in */}
+                <Route path="/profile" element={<ProfileOrAuthPage />} />
 
-              {/* Shopping Flow */}
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/wishlist" element={<WishlistPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+                {/* Shopping Flow */}
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/wishlist" element={<WishlistPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
 
-              {/* Brand Pages */}
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/sustainability" element={<SustainabilityPage />} />
-              <Route path="/contact" element={<ContactUs />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/loyalty" element={<LoyaltyPage />} />
+                {/* Brand Pages */}
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/sustainability" element={<SustainabilityPage />} />
+                <Route path="/contact" element={<ContactUs />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/loyalty" element={<LoyaltyPage />} />
 
-              {/* Legal */}
-              <Route path="/terms" element={<TermsPage />} />
-              <Route path="/privacy" element={<PrivacyPage />} />
+                {/* Legal */}
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
 
-              {/* 404 Catch-all */}
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-            <Footer />
-          </div>
-        </WishlistProvider>
-      </CartProvider>
+                {/* Admin Area */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/*" element={<AdminDashboard />} />
+
+                {/* 404 Catch-all */}
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+              {!isAdminPath && <Footer />}
+            </div>
+          </WishlistProvider>
+        </CartProvider>
+      </AdminProvider>
     </AuthProvider>
   );
 }

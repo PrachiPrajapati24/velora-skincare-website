@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
+const trackVisitor = require('./middleware/trackVisitor');
 
 // Initialize express app
 const app = express();
@@ -18,8 +19,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static assets in production if needed
-// (For this project, frontend is built separately, but we keep server clean)
+// Visitor tracking (runs on every request, non-blocking)
+app.use(trackVisitor);
 
 // Mount Routers
 app.use('/api/auth', require('./routes/auth'));
@@ -29,6 +30,7 @@ app.use('/api/wishlist', require('./routes/wishlist'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/newsletter', require('./routes/newsletter'));
+app.use('/api/admin', require('./routes/admin'));
 
 // Base Route
 app.get('/', (req, res) => {
