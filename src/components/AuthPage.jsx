@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FiMail, FiLock, FiUser, FiPhone, FiEye, FiEyeOff, FiArrowLeft } from 'react-icons/fi';
 import Toast from './Toast';
+import api from '../utils/api';
 import './AuthPage.css';
 import veloraLogo from '../assets/velora_logo.png';
 
 const AuthPage = () => {
   const navigate = useNavigate();
-  const { login, register, googleLogin } = useAuth();
+  const { login, register } = useAuth();
   
-  const [isLogin, setIsLogin] = useState(true);
+  const [viewMode, setViewMode] = useState('login'); // 'login', 'signup', 'forgot'
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [forgotToast, setForgotToast] = useState(null);
+  
+  // Forms state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,55 +27,14 @@ const AuthPage = () => {
     confirmPassword: '',
   });
 
-  // Initialize Google Identity Services
-  useEffect(() => {
-    /* global google */
-    if (window.google) {
-      google.accounts.id.initialize({
-        client_id: "YOUR_GOOGLE_CLIENT_ID_PLACEHOLDER.apps.googleusercontent.com",
-        callback: async (response) => {
-          try {
-            setLoading(true);
-            setError('');
-            const token = response.credential;
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const res = await googleLogin(payload.name, payload.email, payload.sub);
-            if (res.success) {
-              navigate('/');
-            } else {
-              setError(res.message || 'Google authentication failed');
-            }
-          } catch (err) {
-            console.error(err);
-            setError('An error occurred during Google sign-in.');
-          } finally {
-            setLoading(false);
-          }
-        }
-      });
-      const btnEl = document.getElementById("google-signin-btn");
-      if (btnEl) {
-        google.accounts.id.renderButton(btnEl, { theme: "outline", size: "large", width: 220 });
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Forgot password flow states
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
 
-  const handleSimulatedGoogleLogin = async () => {
-    setLoading(true);
-    setError('');
-    const res = await googleLogin(
-      'Google User',
-      'google.user@gmail.com',
-      'google-id-123456'
-    );
-    if (res.success) {
-      navigate('/');
-    } else {
-      setError(res.message);
-    }
-    setLoading(false);
-  };
+  const isLogin = viewMode === 'login';
 
   const handleChange = (e) => {
     setFormData({
@@ -114,6 +77,55 @@ const AuthPage = () => {
     setLoading(false);
   };
 
+  const handleSendOTP = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMsg('');
+    setLoading(true);
+    try {
+      const res = await api.post('/auth/forgot-password', { email: forgotEmail });
+      if (res.data.success) {
+        setOtpSent(true);
+        setSuccessMsg(res.data.message || 'OTP verification code has been sent to your email.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to send OTP code.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMsg('');
+    if (newPassword !== confirmNewPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await api.post('/auth/reset-password', {
+        email: forgotEmail,
+        otp,
+        password: newPassword
+      });
+      if (res.data.success) {
+        setForgotToast({ message: '🎉 Password reset successfully! You can now log in.', type: 'success' });
+        setViewMode('login');
+        setOtpSent(false);
+        setForgotEmail('');
+        setOtp('');
+        setNewPassword('');
+        setConfirmNewPassword('');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to reset password.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="auth-page-container animate-fade">
       {forgotToast && <Toast message={forgotToast.message} type={forgotToast.type} onDone={() => setForgotToast(null)} />}
@@ -141,160 +153,284 @@ const AuthPage = () => {
             {/* Logo Header */}
             <div className="auth-brand-header">
               <img src={veloraLogo} alt="Velora" className="auth-logo" />
-              <h3>{isLogin ? 'Welcome Back' : 'Create Account'}</h3>
-              <p className="auth-subtitle">
-                {isLogin 
-                  ? 'Sign in to access your orders, points, and skincare vault.' 
-                  : 'Join the circle for special member benefits and 10% off.'}
-              </p>
+              {viewMode === 'forgot' ? (
+                <>
+                  <h3>Reset Password</h3>
+                  <p className="auth-subtitle">
+                    {otpSent 
+                      ? 'Enter the 6-digit code sent to your email and your new password.'
+                      : 'Enter your registered email address to receive a secure recovery code.'}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h3>{isLogin ? 'Welcome Back' : 'Create Account'}</h3>
+                  <p className="auth-subtitle">
+                    {isLogin 
+                      ? 'Sign in to access your orders, points, and skincare vault.' 
+                      : 'Join the circle for special member benefits and 10% off.'}
+                  </p>
+                </>
+              )}
             </div>
 
             {/* Tabs */}
-            <div className="auth-tabs">
-              <button 
-                className={`auth-tab-btn ${isLogin ? 'active' : ''}`}
-                onClick={() => { setIsLogin(true); setError(''); }}
-              >
-                Sign In
-              </button>
-              <button 
-                className={`auth-tab-btn ${!isLogin ? 'active' : ''}`}
-                onClick={() => { setIsLogin(false); setError(''); }}
-              >
-                Sign Up
-              </button>
-              <div className={`auth-indicator-pill ${!isLogin ? 'signup-active' : ''}`}></div>
-            </div>
+            {viewMode !== 'forgot' && (
+              <div className="auth-tabs">
+                <button 
+                  className={`auth-tab-btn ${isLogin ? 'active' : ''}`}
+                  onClick={() => { setViewMode('login'); setError(''); setSuccessMsg(''); }}
+                >
+                  Sign In
+                </button>
+                <button 
+                  className={`auth-tab-btn ${viewMode === 'signup' ? 'active' : ''}`}
+                  onClick={() => { setViewMode('signup'); setError(''); setSuccessMsg(''); }}
+                >
+                  Sign Up
+                </button>
+                <div className={`auth-indicator-pill ${viewMode === 'signup' ? 'signup-active' : ''}`}></div>
+              </div>
+            )}
 
             {error && <div className="auth-error-alert">{error}</div>}
+            {successMsg && <div className="auth-success-alert" style={{
+              background: 'rgba(16, 185, 129, 0.08)',
+              border: '1px solid #10b981',
+              color: '#10b981',
+              borderRadius: '10px',
+              padding: '12px 16px',
+              fontSize: '0.85rem',
+              marginBottom: '20px',
+              textAlign: 'center'
+            }}>{successMsg}</div>}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="auth-form-fields">
-              {!isLogin && (
-                <div className="form-input-group">
-                  <label>Full Name</label>
-                  <div className="input-wrapper">
-                    <FiUser className="input-icon" />
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Jane Doe"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required={!isLogin}
-                    />
+            {viewMode === 'forgot' ? (
+              otpSent ? (
+                /* Enter OTP and Reset Password Form */
+                <form onSubmit={handleResetPassword} className="auth-form-fields">
+                  <div className="form-input-group">
+                    <label>Verification Code (OTP)</label>
+                    <div className="input-wrapper">
+                      <FiLock className="input-icon" />
+                      <input
+                        type="text"
+                        placeholder="Enter 6-digit OTP"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        required
+                        maxLength={6}
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
 
-              <div className="form-input-group">
-                <label>Email Address</label>
-                <div className="input-wrapper">
-                  <FiMail className="input-icon" />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="you@example.com"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              {!isLogin && (
-                <div className="form-input-group">
-                  <label>Phone Number</label>
-                  <div className="input-wrapper">
-                    <FiPhone className="input-icon" />
-                    <input
-                      type="tel"
-                      name="phone"
-                      placeholder="+91 98765 43210"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required={!isLogin}
-                    />
+                  <div className="form-input-group">
+                    <label>New Password</label>
+                    <div className="input-wrapper">
+                      <FiLock className="input-icon" />
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="New Password (min 6 characters)"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        required
+                        minLength={6}
+                      />
+                      <button
+                        type="button"
+                        className="toggle-password-visibility"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <FiEyeOff /> : <FiEye />}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
 
-              <div className="form-input-group">
-                <label>Password</label>
-                <div className="input-wrapper">
-                  <FiLock className="input-icon" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    placeholder="••••••••"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="toggle-password-visibility"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  <div className="form-input-group">
+                    <label>Confirm New Password</label>
+                    <div className="input-wrapper">
+                      <FiLock className="input-icon" />
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Confirm New Password"
+                        value={confirmNewPassword}
+                        onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <button type="submit" className="auth-submit-btn-large" disabled={loading}>
+                    {loading ? 'Processing...' : 'Reset Password'}
                   </button>
-                </div>
-              </div>
 
-              {!isLogin && (
+                  <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                    <button 
+                      type="button" 
+                      onClick={handleSendOTP} 
+                      className="forgot-password-link"
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#56876D', fontSize: '0.85rem' }}
+                    >
+                      Resend Code
+                    </button>
+                  </div>
+
+                  <button 
+                    type="button" 
+                    className="auth-submit-btn-large" 
+                    style={{ background: '#f5f5f5', color: '#666', marginTop: '12px' }}
+                    onClick={() => { setViewMode('login'); setOtpSent(false); setError(''); setSuccessMsg(''); }}
+                  >
+                    ← Back to Sign In
+                  </button>
+                </form>
+              ) : (
+                /* Enter Email to Send OTP Form */
+                <form onSubmit={handleSendOTP} className="auth-form-fields">
+                  <div className="form-input-group">
+                    <label>Email Address</label>
+                    <div className="input-wrapper">
+                      <FiMail className="input-icon" />
+                      <input
+                        type="email"
+                        placeholder="you@example.com"
+                        value={forgotEmail}
+                        onChange={(e) => setForgotEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <button type="submit" className="auth-submit-btn-large" disabled={loading}>
+                    {loading ? 'Processing...' : 'Send Verification Code'}
+                  </button>
+
+                  <button 
+                    type="button" 
+                    className="auth-submit-btn-large" 
+                    style={{ background: '#f5f5f5', color: '#666', marginTop: '12px' }}
+                    onClick={() => { setViewMode('login'); setError(''); setSuccessMsg(''); }}
+                  >
+                    ← Back to Sign In
+                  </button>
+                </form>
+              )
+            ) : (
+              /* Normal Sign In / Sign Up Form */
+              <form onSubmit={handleSubmit} className="auth-form-fields">
+                {!isLogin && (
+                  <div className="form-input-group">
+                    <label>Full Name</label>
+                    <div className="input-wrapper">
+                      <FiUser className="input-icon" />
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Jane Doe"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required={!isLogin}
+                      />
+                    </div>
+                  </div>
+                )}
+
                 <div className="form-input-group">
-                  <label>Confirm Password</label>
+                  <label>Email Address</label>
+                  <div className="input-wrapper">
+                    <FiMail className="input-icon" />
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="you@example.com"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {!isLogin && (
+                  <div className="form-input-group">
+                    <label>Phone Number</label>
+                    <div className="input-wrapper">
+                      <FiPhone className="input-icon" />
+                      <input
+                        type="tel"
+                        name="phone"
+                        placeholder="+91 98765 43210"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required={!isLogin}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="form-input-group">
+                  <label>Password</label>
                   <div className="input-wrapper">
                     <FiLock className="input-icon" />
                     <input
                       type={showPassword ? 'text' : 'password'}
-                      name="confirmPassword"
+                      name="password"
                       placeholder="••••••••"
-                      value={formData.confirmPassword}
+                      value={formData.password}
                       onChange={handleChange}
-                      required={!isLogin}
+                      required
                     />
+                    <button
+                      type="button"
+                      className="toggle-password-visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <FiEyeOff /> : <FiEye />}
+                    </button>
                   </div>
                 </div>
-              )}
 
-              {isLogin && (
-                <div className="auth-extra-options">
-                  <label className="remember-me-checkbox">
-                    <input type="checkbox" />
-                    <span className="checkbox-box"></span>
-                    <span>Remember me</span>
-                  </label>
-                  <button type="button" className="forgot-password-link" onClick={() => setForgotToast({ message: '📧 Password reset link sent to your email!', type: 'info' })}>
-                    Forgot Password?
-                  </button>
-                </div>
-              )}
+                {!isLogin && (
+                  <div className="form-input-group">
+                    <label>Confirm Password</label>
+                    <div className="input-wrapper">
+                      <FiLock className="input-icon" />
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        name="confirmPassword"
+                        placeholder="••••••••"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        required={!isLogin}
+                      />
+                    </div>
+                  </div>
+                )}
 
-              <button type="submit" className="auth-submit-btn-large" disabled={loading}>
-                {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
-              </button>
-            </form>
+                {isLogin && (
+                  <div className="auth-extra-options">
+                    <label className="remember-me-checkbox">
+                      <input type="checkbox" />
+                      <span className="checkbox-box"></span>
+                      <span>Remember me</span>
+                    </label>
+                    <button 
+                      type="button" 
+                      className="forgot-password-link" 
+                      onClick={() => { setViewMode('forgot'); setError(''); setSuccessMsg(''); }}
+                    >
+                      Forgot Password?
+                    </button>
+                  </div>
+                )}
 
-            <div className="auth-social-divider">
-              <span>or continue with</span>
-            </div>
+                <button type="submit" className="auth-submit-btn-large" disabled={loading}>
+                  {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
+                </button>
+              </form>
+            )}
 
-            <div className="auth-social-buttons">
-              <div id="google-signin-btn" className="google-gis-btn"></div>
-              
-              <button className="simulated-google-btn" onClick={handleSimulatedGoogleLogin}>
-                <svg viewBox="0 0 24 24" width="18" height="18">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Google Auth (Quick Test)
-              </button>
-            </div>
-
-            {!isLogin && (
+            {!isLogin && viewMode !== 'forgot' && (
               <p className="auth-agreement-notice">
                 By signing up, you agree to our{' '}
                 <Link to="/terms">Terms</Link> and{' '}

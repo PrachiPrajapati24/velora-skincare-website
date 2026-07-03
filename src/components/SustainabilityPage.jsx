@@ -1,14 +1,17 @@
 import React from 'react';
 import './SustainabilityPage.css';
 import { FiFeather, FiPackage, FiHeart, FiRefreshCw, FiAward, FiTrendingUp } from 'react-icons/fi';
-
-
+import heroBg from '../assets/bodycare.jpg';
+import packagingImg from '../assets/skincare.jpg';
 
 const SustainabilityPage = () => {
   return (
     <div className="sustainability-page">
       {/* Hero Section */}
-      <section className="sustainability-hero">
+      <section 
+        className="sustainability-hero"
+        style={{ backgroundImage: `linear-gradient(135deg, rgba(38, 121, 110, 0.92), rgba(31, 98, 89, 0.92)), url(${heroBg})` }}
+      >
         <div className="sustainability-hero-content">
           <h1>Our Commitment to Sustainability</h1>
           <p>Beauty that doesn't cost the Earth</p>
@@ -105,7 +108,7 @@ const SustainabilityPage = () => {
         <div className="sustainability-container">
           <div className="packaging-content">
             <div className="packaging-image">
-              <img src="https://images.unsplash.com/photo-1556228841-0e56870f09b7?w=600&q=80" alt="Sustainable Packaging" />
+              <img src={packagingImg} alt="Sustainable Packaging" />
             </div>
             <div className="packaging-text">
               <h2>Sustainable Packaging</h2>

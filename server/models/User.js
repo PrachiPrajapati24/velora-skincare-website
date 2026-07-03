@@ -60,7 +60,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['user', 'admin'],
     default: 'user'
-  }
+  },
+  resetPasswordOTP: String,
+  resetPasswordExpires: Date
 }, {
   timestamps: true
 });
