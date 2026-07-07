@@ -23,6 +23,10 @@ const contactSchema = new mongoose.Schema({
   message: {
     type: String,
     required: [true, 'Please add a message']
+  },
+  replied: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

@@ -368,4 +368,187 @@ router.get('/realtime', adminAuth, async (req, res) => {
   }
 });
 
+/* ─────────────────────────────────────────────────
+   DELETE USER
+───────────────────────────────────────────────── */
+router.delete('/users/:id', adminAuth, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'User deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   CONTACT MESSAGES
+───────────────────────────────────────────────── */
+router.get('/contacts', adminAuth, async (req, res) => {
+  try {
+    const Contact = require('../models/Contact');
+    const contacts = await Contact.find().sort({ createdAt: -1 }).limit(100);
+    res.json({ success: true, contacts });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   MARK CONTACT AS REPLIED
+───────────────────────────────────────────────── */
+router.put('/contacts/:id/reply', adminAuth, async (req, res) => {
+  try {
+    const Contact = require('../models/Contact');
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      { replied: true },
+      { new: true }
+    );
+    if (!contact) return res.status(404).json({ success: false, message: 'Message not found' });
+    res.json({ success: true, contact });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   UPDATE ORDER STATUS
+───────────────────────────────────────────────── */
+router.put('/orders/:id/status', adminAuth, async (req, res) => {
+  try {
+    const { status } = req.body;
+    const validStatuses = ['processing', 'shipped', 'delivered', 'cancelled'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ success: false, message: 'Invalid status value' });
+    }
+    const updateFields = { status };
+    if (status === 'delivered') {
+      updateFields.isPaid = true;
+      updateFields.paidAt = new Date();
+    }
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      updateFields,
+      { new: true }
+    ).populate('user', 'name email');
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    res.json({ success: true, order });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   GET ALL PRODUCTS (admin)
+───────────────────────────────────────────────── */
+router.get('/products', adminAuth, async (req, res) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 });
+    res.json({ success: true, products });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   ADD PRODUCT
+───────────────────────────────────────────────── */
+router.post('/products', adminAuth, async (req, res) => {
+  try {
+    const { name, price, description, category, image, rating, countInStock, subtitle } = req.body;
+    if (!name || !price || !category) {
+      return res.status(400).json({ success: false, message: 'Name, price and category are required' });
+    }
+    const product = await Product.create({
+      name:          name.trim(),
+      price:         Number(price),
+      description:   description?.trim() || 'No description provided.',
+      category:      category.toLowerCase(),   // always store lowercase
+      image:         image?.trim() || '',
+      rating:        rating ? Number(rating) : 4.8,
+      reviewsCount:  0,
+      inStock:       true,
+      countInStock:  countInStock ? Number(countInStock) : 100,
+      subtitle:      subtitle?.trim() || ''
+    });
+    res.status(201).json({ success: true, product });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   UPDATE PRODUCT
+───────────────────────────────────────────────── */
+router.put('/products/:id', adminAuth, async (req, res) => {
+  try {
+    const { name, price, description, category, image, rating, countInStock, subtitle } = req.body;
+
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    if (name) product.name = name.trim();
+    if (price !== undefined) product.price = Number(price);
+    if (description !== undefined) product.description = description.trim() || 'No description provided.';
+    if (category) product.category = category.toLowerCase();
+    if (image !== undefined) product.image = image.trim();
+    if (rating !== undefined) product.rating = Number(rating);
+    if (countInStock !== undefined) {
+      product.countInStock = Number(countInStock);
+      product.inStock = Number(countInStock) > 0;
+    }
+    if (subtitle !== undefined) product.subtitle = subtitle.trim();
+
+    await product.save();
+    res.json({ success: true, product });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   DELETE PRODUCT
+───────────────────────────────────────────────── */
+router.delete('/products/:id', adminAuth, async (req, res) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (!product) return res.status(404).json({ success: false, message: 'Product not found' });
+    res.json({ success: true, message: 'Product deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   GET ALL REVIEWS (admin)
+───────────────────────────────────────────────── */
+router.get('/reviews', adminAuth, async (req, res) => {
+  try {
+    const Review = require('../models/Review');
+    const reviews = await Review.find().sort({ createdAt: -1 }).limit(50);
+    res.json({ success: true, reviews });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────────
+   DELETE REVIEW
+───────────────────────────────────────────────── */
+router.delete('/reviews/:id', adminAuth, async (req, res) => {
+  try {
+    const Review = require('../models/Review');
+    const review = await Review.findByIdAndDelete(req.params.id);
+    if (!review) return res.status(404).json({ success: false, message: 'Review not found' });
+    res.json({ success: true, message: 'Review deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 module.exports = router;
+
