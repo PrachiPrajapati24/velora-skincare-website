@@ -280,3 +280,28 @@
     font-size: 0.85rem;
   }
 }
+
+/* ── Dot indicators ─────────────────────────── */
+.review-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+}
+
+.review-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: #ccc;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.review-dot.active {
+  background: #56876D;
+  transform: scale(1.3);
+}
+

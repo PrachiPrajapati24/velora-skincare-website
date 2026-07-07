@@ -6,14 +6,20 @@ import AdminCharts from './AdminCharts';
 import AdminUsers from './AdminUsers';
 import AdminOrders from './AdminOrders';
 import AdminActivity from './AdminActivity';
+import AdminContacts from './AdminContacts';
+import AdminProducts from './AdminProducts';
+import AdminReviews from './AdminReviews';
 import './AdminDashboard.css';
 
 const NAV_ITEMS = [
-  { to: '/admin',          label: 'Overview',   icon: '📊', end: true },
-  { to: '/admin/charts',   label: 'Analytics',  icon: '📈' },
-  { to: '/admin/users',    label: 'Users',      icon: '👥' },
-  { to: '/admin/orders',   label: 'Orders',     icon: '🛒' },
-  { to: '/admin/activity', label: 'Activity',   icon: '⚡' },
+  { to: '/admin',           label: 'Overview',   icon: '📊', end: true },
+  { to: '/admin/charts',    label: 'Analytics',  icon: '📈' },
+  { to: '/admin/users',     label: 'Users',      icon: '👥' },
+  { to: '/admin/orders',    label: 'Orders',     icon: '🛒' },
+  { to: '/admin/products',  label: 'Products',   icon: '🧴' },
+  { to: '/admin/contacts',  label: 'Contacts',   icon: '✉️' },
+  { to: '/admin/reviews',   label: 'Reviews',    icon: '⭐' },
+  { to: '/admin/activity',  label: 'Activity',   icon: '⚡' },
 ];
 
 const AdminDashboard = () => {
@@ -133,6 +139,9 @@ const AdminDashboard = () => {
             <Route path="charts" element={<AdminCharts />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="orders" element={<AdminOrders />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="contacts" element={<AdminContacts />} />
+            <Route path="reviews" element={<AdminReviews />} />
             <Route path="activity" element={<AdminActivity />} />
           </Routes>
         </div>

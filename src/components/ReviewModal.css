@@ -1,0 +1,234 @@
+/* ─────────────────────────────────────────────────
+   ReviewModal.css  — Velora Design System
+───────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Jost:wght@300;400;500;600&display=swap');
+
+.rm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: rmFadeIn 0.25s ease;
+}
+
+@keyframes rmFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.rm-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 480px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+  animation: rmSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes rmSlideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.rm-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #999;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.rm-close:hover { color: #333; }
+
+.rm-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.rm-leaf {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+.rm-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+}
+
+.rm-subtitle {
+  font-family: 'Jost', sans-serif;
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.rm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rm-rating-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.rm-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rm-stars {
+  display: flex;
+  gap: 6px;
+}
+
+.rm-star {
+  font-size: 2.2rem;
+  color: #d4d4d4;
+  cursor: pointer;
+  transition: color 0.15s, transform 0.15s;
+  display: inline-block;
+}
+
+.rm-star.filled {
+  color: #e6a817;
+}
+
+.rm-rating-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: #56876D;
+  font-weight: 600;
+  min-height: 1.2em;
+}
+
+.rm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.rm-textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.9rem;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.rm-textarea:focus {
+  border-color: #56876D;
+}
+
+.rm-charcount {
+  font-size: 0.75rem;
+  color: #aaa;
+  text-align: right;
+  font-family: 'Jost', sans-serif;
+}
+
+.rm-error {
+  background: #fff5f5;
+  color: #c53030;
+  border: 1px solid #fed7d7;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
+}
+
+.rm-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.rm-skip-btn {
+  background: transparent;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.rm-skip-btn:hover { border-color: #999; color: #555; }
+
+.rm-submit-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #56876D, #3d5a48);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 24px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 14px rgba(86, 135, 109, 0.4);
+}
+.rm-submit-btn:hover:not(:disabled) { transform: translateY(-1px); opacity: 0.92; }
+.rm-submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+/* Success state */
+.rm-success {
+  text-align: center;
+  padding: 10px 0 20px;
+  animation: rmFadeIn 0.4s ease;
+}
+
+.rm-success-icon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+  animation: rmBounce 0.6s ease;
+}
+
+@keyframes rmBounce {
+  0%  { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100%{ transform: scale(1);   opacity: 1; }
+}
+
+.rm-success h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin: 0 0 10px;
+}
+
+.rm-success p {
+  font-family: 'Jost', sans-serif;
+  color: #888;
+  font-size: 0.9rem;
+}

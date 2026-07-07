@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FiCheckCircle, FiShoppingBag, FiArrowRight } from 'react-icons/fi';
+import { FiCheckCircle, FiShoppingBag, FiArrowRight, FiStar } from 'react-icons/fi';
+import ReviewModal from './ReviewModal';
 import './OrderConfirmationPage.css';
 
 const OrderConfirmationPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [showReview, setShowReview] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   // Retrieve details passed from CheckoutPage
   const { orderId, total, points } = location.state || {};
@@ -14,7 +17,13 @@ const OrderConfirmationPage = () => {
   useEffect(() => {
     if (!orderId) {
       navigate('/');
+      return;
     }
+    // Offer review after 3 seconds — optional, non-blocking
+    const timer = setTimeout(() => {
+      setShowReview(true);
+    }, 3000);
+    return () => clearTimeout(timer);
   }, [orderId, navigate]);
 
   if (!orderId) return null;
@@ -52,6 +61,31 @@ const OrderConfirmationPage = () => {
           </p>
         </div>
 
+        {/* Review CTA */}
+        {!reviewSubmitted && (
+          <button
+            className="leave-review-btn"
+            onClick={() => setShowReview(true)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              margin: '16px auto 0', padding: '12px 28px',
+              border: '1.5px solid #56876D', borderRadius: '30px',
+              background: 'transparent', color: '#56876D',
+              fontFamily: 'inherit', fontSize: '0.9rem', fontWeight: '600',
+              cursor: 'pointer', transition: 'all 0.25s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#56876D'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#56876D'; }}
+          >
+            <FiStar /> Leave a Review (optional)
+          </button>
+        )}
+        {reviewSubmitted && (
+          <p style={{ textAlign: 'center', color: '#56876D', fontWeight: '600', marginTop: '12px' }}>
+            ✓ Thank you for your review!
+          </p>
+        )}
+
         {/* Navigation CTAs */}
         <div className="confirmation-actions">
           <button className="continue-shop-btn" onClick={() => navigate('/products')}>
@@ -62,6 +96,18 @@ const OrderConfirmationPage = () => {
           </button>
         </div>
       </div>
+
+      {/* Review Modal (non-mandatory, auto-opens after 3s) */}
+      {showReview && (
+        <ReviewModal
+          orderId={orderId}
+          onClose={() => setShowReview(false)}
+          onSubmitted={() => {
+            setReviewSubmitted(true);
+            setShowReview(false);
+          }}
+        />
+      )}
     </div>
   );
 };
