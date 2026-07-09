@@ -7,9 +7,7 @@ const AdminContacts = () => {
   const [search, setSearch]         = useState('');
   const [loading, setLoading]       = useState(true);
   const [expanded, setExpanded]     = useState(null);
-  const [replyOpen, setReplyOpen]   = useState(null);   // which contact has the reply box open
-  const [replyText, setReplyText]   = useState('');
-  const [sending, setSending]       = useState(false);
+  const [updating, setUpdating]     = useState(null);   // contact ID being updated
   const [toast, setToast]           = useState(null);   // { type: 'success'|'error', msg }
 
   const fetchContacts = useCallback(async () => {
@@ -32,28 +30,19 @@ const AdminContacts = () => {
     setTimeout(() => setToast(null), 4000);
   };
 
-  const openReply = (e, contactId) => {
+  const handleMarkReplied = async (e, contactId) => {
     e.stopPropagation();
-    setReplyOpen(replyOpen === contactId ? null : contactId);
-    setReplyText('');
-  };
-
-  const handleSendReply = async (e, contactId) => {
-    e.stopPropagation();
-    if (!replyText.trim()) return;
-    setSending(true);
+    setUpdating(contactId);
     try {
-      const res = await API.post(`/contacts/${contactId}/send-reply`, { replyMessage: replyText });
+      const res = await API.put(`/contacts/${contactId}/reply`);
       if (res.data.success) {
         setContacts(prev => prev.map(c => c._id === contactId ? { ...c, replied: true } : c));
-        setReplyOpen(null);
-        setReplyText('');
-        showToast('success', `✅ Reply sent successfully!`);
+        showToast('success', `✅ Marked message as replied!`);
       }
     } catch (err) {
-      showToast('error', `❌ ${err.response?.data?.message || 'Failed to send email. Please try again.'}`);
+      showToast('error', `❌ Failed to update message status.`);
     } finally {
-      setSending(false);
+      setUpdating(null);
     }
   };
 
@@ -190,91 +179,23 @@ const AdminContacts = () => {
                     {c.message}
                   </p>
 
-                  {/* Reply button */}
-                  <button
-                    onClick={(e) => openReply(e, c._id)}
-                    style={{
-                      display: 'inline-flex', alignItems: 'center', gap: '6px',
-                      padding: '8px 20px', borderRadius: '8px',
-                      background: c.replied
-                        ? (replyOpen === c._id ? 'var(--green-dark, #276749)' : '#e2e8f0')
-                        : 'var(--green-dark, #276749)',
-                      color: c.replied && replyOpen !== c._id ? '#475569' : '#fff',
-                      border: 'none', fontSize: '0.82rem', fontWeight: '600',
-                      fontFamily: 'var(--font-body)', cursor: 'pointer',
-                      transition: 'all 0.2s',
-                    }}
-                  >
-                    ✉️ {c.replied
-                      ? (replyOpen === c._id ? 'Close Reply Box' : 'Send Another Reply')
-                      : (replyOpen === c._id ? 'Close Reply Box' : 'Reply via Email')}
-                  </button>
-
-                  {/* Inline reply composer */}
-                  {replyOpen === c._id && (
-                    <div
-                      onClick={e => e.stopPropagation()}
+                  {/* Mark as Replied button */}
+                  {!c.replied && (
+                    <button
+                      onClick={(e) => handleMarkReplied(e, c._id)}
+                      disabled={updating === c._id}
                       style={{
-                        marginTop: '16px',
-                        background: '#f8fdf9',
-                        border: '1.5px solid #a7d7b8',
-                        borderRadius: '12px',
-                        padding: '18px',
+                        display: 'inline-flex', alignItems: 'center', gap: '6px',
+                        padding: '8px 20px', borderRadius: '8px',
+                        background: 'var(--green-dark, #276749)',
+                        color: '#fff',
+                        border: 'none', fontSize: '0.82rem', fontWeight: '600',
+                        fontFamily: 'var(--font-body)', cursor: 'pointer',
+                        transition: 'all 0.2s',
                       }}
                     >
-                      <div style={{ fontWeight: '700', fontSize: '0.8rem', color: '#2d6a4f', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-                        ✉️ Compose Reply → {c.email}
-                      </div>
-                      <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '8px' }}>
-                        <strong>Subject:</strong> Re: {c.subject} — Velora Skincare
-                      </div>
-                      <textarea
-                        value={replyText}
-                        onChange={e => setReplyText(e.target.value)}
-                        placeholder={`Hi ${c.name},\n\nThank you for reaching out to us...`}
-                        rows={6}
-                        style={{
-                          width: '100%', boxSizing: 'border-box',
-                          padding: '12px', borderRadius: '8px',
-                          border: '1.5px solid #c8e6c9', fontSize: '0.88rem',
-                          fontFamily: 'var(--font-body)', lineHeight: '1.6',
-                          resize: 'vertical', outline: 'none',
-                          background: '#fff',
-                        }}
-                      />
-                      <div style={{ display: 'flex', gap: '10px', marginTop: '12px', justifyContent: 'flex-end' }}>
-                        <button
-                          onClick={e => { e.stopPropagation(); setReplyOpen(null); setReplyText(''); }}
-                          style={{
-                            padding: '8px 18px', borderRadius: '8px',
-                            border: '1.5px solid #d1d5db', background: '#fff',
-                            color: '#6b7280', fontSize: '0.82rem', cursor: 'pointer',
-                          }}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={(e) => handleSendReply(e, c._id)}
-                          disabled={sending || !replyText.trim()}
-                          style={{
-                            padding: '8px 22px', borderRadius: '8px',
-                            border: 'none',
-                            background: sending || !replyText.trim() ? '#94a3b8' : 'linear-gradient(135deg, #2d6a4f, #40916c)',
-                            color: '#fff', fontSize: '0.82rem', fontWeight: '700',
-                            cursor: sending || !replyText.trim() ? 'not-allowed' : 'pointer',
-                            display: 'flex', alignItems: 'center', gap: '6px',
-                            transition: 'all 0.2s',
-                          }}
-                        >
-                          {sending ? (
-                            <>
-                              <span style={{ display: 'inline-block', width: '12px', height: '12px', border: '2px solid rgba(255,255,255,0.4)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
-                              Sending...
-                            </>
-                          ) : '🚀 Send Email'}
-                        </button>
-                      </div>
-                    </div>
+                      {updating === c._id ? 'Updating...' : '✓ Mark as Replied'}
+                    </button>
                   )}
                 </div>
               )}
