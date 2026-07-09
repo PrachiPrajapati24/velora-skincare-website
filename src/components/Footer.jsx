@@ -28,6 +28,7 @@ const Footer = () => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [subMessage, setSubMessage] = useState("");
+  const [subLoading, setSubLoading] = useState(false);
 
   useEffect(() => {
     const scrollContainer = scrollRef.current;
@@ -59,7 +60,6 @@ const Footer = () => {
     }, 300);
   };
 
-  const [subLoading, setSubLoading] = useState(false);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
