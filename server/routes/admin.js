@@ -414,6 +414,66 @@ router.put('/contacts/:id/reply', adminAuth, async (req, res) => {
 });
 
 /* ─────────────────────────────────────────────────
+   SEND ACTUAL EMAIL REPLY TO CONTACT PERSON
+───────────────────────────────────────────────── */
+router.post('/contacts/:id/send-reply', adminAuth, async (req, res) => {
+  try {
+    const Contact = require('../models/Contact');
+    const nodemailer = require('nodemailer');
+    const { replyMessage } = req.body;
+
+    if (!replyMessage || !replyMessage.trim()) {
+      return res.status(400).json({ success: false, message: 'Reply message cannot be empty.' });
+    }
+
+    const contact = await Contact.findById(req.params.id);
+    if (!contact) return res.status(404).json({ success: false, message: 'Contact message not found.' });
+
+    // Send real email via nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"Velora Luxury Skincare" <${process.env.EMAIL_USER}>`,
+      to: contact.email,
+      subject: `Re: ${contact.subject} — Velora Skincare`,
+      html: `
+        <div style="font-family: Georgia, serif; color: #333; padding: 30px; max-width: 620px; margin: 0 auto; border: 1px solid #f0eae1; background: #fcfbfa; border-radius: 8px;">
+          <div style="text-align: center; margin-bottom: 24px;">
+            <h1 style="color: #2d6a4f; font-family: serif; letter-spacing: 3px; margin: 0; font-size: 1.8rem;">VELORA</h1>
+            <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; color: #8a7e72; margin: 4px 0 0;">Luxury Skincare</p>
+          </div>
+          <hr style="border: 0; border-top: 1px solid #f0eae1; margin: 20px 0;" />
+          <p style="margin-bottom: 8px;">Dear <strong>${contact.name}</strong>,</p>
+          <p style="margin-bottom: 18px; color: #555; font-size: 0.9rem;">Thank you for getting in touch with us regarding <em>"${contact.subject}"</em>. Here is our response:</p>
+          <div style="background: #f7faf8; padding: 20px; border-left: 4px solid #2d6a4f; border-radius: 4px; margin: 16px 0; font-size: 0.95rem; line-height: 1.7; color: #333;">
+            ${replyMessage.replace(/\n/g, '<br />')}
+          </div>
+          <p style="margin-top: 20px;">Warm regards,<br /><strong>The Velora Team</strong></p>
+          <hr style="border: 0; border-top: 1px solid #f0eae1; margin: 24px 0;" />
+          <p style="font-size: 0.72rem; text-align: center; color: #aaa;">© ${new Date().getFullYear()} Velora Luxury Skincare. You are receiving this because you contacted us at velora-skincare.com.</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    // Mark as replied in DB
+    await Contact.findByIdAndUpdate(req.params.id, { replied: true });
+
+    res.json({ success: true, message: `Reply sent successfully to ${contact.email}` });
+  } catch (err) {
+    console.error('Reply email error:', err.message);
+    res.status(500).json({ success: false, message: `Failed to send email: ${err.message}` });
+  }
+});
+
+/* ─────────────────────────────────────────────────
    UPDATE ORDER STATUS
 ───────────────────────────────────────────────── */
 router.put('/orders/:id/status', adminAuth, async (req, res) => {
