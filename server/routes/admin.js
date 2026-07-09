@@ -426,10 +426,18 @@ router.post('/contacts/:id/send-reply', adminAuth, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Reply message cannot be empty.' });
     }
 
+    // Guard: make sure email credentials are set on the server
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      return res.status(500).json({
+        success: false,
+        message: 'Email credentials (EMAIL_USER / EMAIL_PASS) are not configured on the server. Please add them in Render → Environment Variables.'
+      });
+    }
+
     const contact = await Contact.findById(req.params.id);
     if (!contact) return res.status(404).json({ success: false, message: 'Contact message not found.' });
 
-    // Send real email via nodemailer
+    // Create transporter and verify connection first
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -437,6 +445,9 @@ router.post('/contacts/:id/send-reply', adminAuth, async (req, res) => {
         pass: process.env.EMAIL_PASS,
       },
     });
+
+    // Will throw if credentials are wrong
+    await transporter.verify();
 
     const mailOptions = {
       from: `"Velora Luxury Skincare" <${process.env.EMAIL_USER}>`,
@@ -456,7 +467,7 @@ router.post('/contacts/:id/send-reply', adminAuth, async (req, res) => {
           </div>
           <p style="margin-top: 20px;">Warm regards,<br /><strong>The Velora Team</strong></p>
           <hr style="border: 0; border-top: 1px solid #f0eae1; margin: 24px 0;" />
-          <p style="font-size: 0.72rem; text-align: center; color: #aaa;">© ${new Date().getFullYear()} Velora Luxury Skincare. You are receiving this because you contacted us at velora-skincare.com.</p>
+          <p style="font-size: 0.72rem; text-align: center; color: #aaa;">© ${new Date().getFullYear()} Velora Luxury Skincare. You received this because you contacted us.</p>
         </div>
       `,
     };
@@ -466,10 +477,15 @@ router.post('/contacts/:id/send-reply', adminAuth, async (req, res) => {
     // Mark as replied in DB
     await Contact.findByIdAndUpdate(req.params.id, { replied: true });
 
-    res.json({ success: true, message: `Reply sent successfully to ${contact.email}` });
+    res.json({ success: true, message: `✅ Reply sent successfully to ${contact.email}` });
   } catch (err) {
     console.error('Reply email error:', err.message);
-    res.status(500).json({ success: false, message: `Failed to send email: ${err.message}` });
+    res.status(500).json({
+      success: false,
+      message: err.message.includes('EAUTH') || err.message.includes('535')
+        ? 'Gmail authentication failed. Check that EMAIL_USER and EMAIL_PASS (App Password) are correct in Render environment variables.'
+        : `Failed to send email: ${err.message}`
+    });
   }
 });
 
