@@ -22,47 +22,30 @@ const ContactUs = () => {
     });
   };
 
-  const [loadingMsg, setLoadingMsg] = useState('Sending...');
-
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setLoading(true);
-    setLoadingMsg('Sending...');
 
-    const attemptSubmit = async (attempt = 1) => {
-      try {
-        const res = await api.post('/contact', contactForm, { timeout: 30000 });
-        if (res.data.success) {
-          setShowSuccessMessage(true);
-          setContactForm({ name: '', email: '', phone: '', subject: '', message: '' });
-          setTimeout(() => setShowSuccessMessage(false), 6000);
-        }
-      } catch (err) {
-        const status = err.response?.status;
-        const isServerSleep = !err.response || status === 502 || status === 503 || status === 504;
-        if (isServerSleep && attempt === 1) {
-          // Render free tier cold-starting — retry once after 6 seconds
-          setLoadingMsg('Server is waking up, please wait...');
-          await new Promise(resolve => setTimeout(resolve, 6000));
-          setLoadingMsg('Retrying...');
-          await attemptSubmit(2);
-          return;
-        }
-        setErrorMessage(
-          isServerSleep
-            ? 'Server is starting up. Please try again in a moment.'
-            : err.response?.data?.message || 'Failed to submit. Please try again.'
-        );
-      } finally {
-        if (attempt !== 1 || !loadingMsg.includes('waking')) {
-          setLoading(false);
-        }
+    try {
+      const res = await api.post('/contact', contactForm);
+      if (res.data.success) {
+        setShowSuccessMessage(true);
+        setContactForm({ name: '', email: '', phone: '', subject: '', message: '' });
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          setShowSuccessMessage(false);
+        }, 5000);
       }
-    };
-
-    await attemptSubmit(1);
-    setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setErrorMessage(
+        err.response?.data?.message || 'Failed to submit contact request. Please check your internet connection and try again.'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -208,7 +191,7 @@ const ContactUs = () => {
                 </div>
 
                 <button type="submit" className="contact-submit-btn" disabled={loading}>
-                  {loading ? loadingMsg : 'Send Message'}
+                  {loading ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </div>
