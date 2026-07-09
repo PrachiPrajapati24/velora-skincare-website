@@ -419,72 +419,61 @@ router.put('/contacts/:id/reply', adminAuth, async (req, res) => {
 router.post('/contacts/:id/send-reply', adminAuth, async (req, res) => {
   try {
     const Contact = require('../models/Contact');
-    const nodemailer = require('nodemailer');
+    const { sendEmail } = require('../utils/emailService');
     const { replyMessage } = req.body;
 
     if (!replyMessage || !replyMessage.trim()) {
       return res.status(400).json({ success: false, message: 'Reply message cannot be empty.' });
     }
 
-    // Guard: make sure email credentials are set on the server
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    // Check if either Resend key or Gmail credentials are set
+    if (!process.env.RESEND_API_KEY && (!process.env.EMAIL_USER || !process.env.EMAIL_PASS)) {
       return res.status(500).json({
         success: false,
-        message: 'Email credentials (EMAIL_USER / EMAIL_PASS) are not configured on the server. Please add them in Render → Environment Variables.'
+        message: 'No email service configured. Please add RESEND_API_KEY or Gmail credentials in Render environment variables.'
       });
     }
 
     const contact = await Contact.findById(req.params.id);
     if (!contact) return res.status(404).json({ success: false, message: 'Contact message not found.' });
 
-    // Create transporter and verify connection first
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    const htmlContent = `
+      <div style="font-family: Georgia, serif; color: #333; padding: 30px; max-width: 620px; margin: 0 auto; border: 1px solid #f0eae1; background: #fcfbfa; border-radius: 8px;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <h1 style="color: #2d6a4f; font-family: serif; letter-spacing: 3px; margin: 0; font-size: 1.8rem;">VELORA</h1>
+          <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; color: #8a7e72; margin: 4px 0 0;">Luxury Skincare</p>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #f0eae1; margin: 20px 0;" />
+        <p style="margin-bottom: 8px;">Dear <strong>${contact.name}</strong>,</p>
+        <p style="margin-bottom: 18px; color: #555; font-size: 0.9rem;">Thank you for getting in touch with us regarding <em>"${contact.subject}"</em>. Here is our response:</p>
+        <div style="background: #f7faf8; padding: 20px; border-left: 4px solid #2d6a4f; border-radius: 4px; margin: 16px 0; font-size: 0.95rem; line-height: 1.7; color: #333;">
+          ${replyMessage.replace(/\n/g, '<br />')}
+        </div>
+        <p style="margin-top: 20px;">Warm regards,<br /><strong>The Velora Team</strong></p>
+        <hr style="border: 0; border-top: 1px solid #f0eae1; margin: 24px 0;" />
+        <p style="font-size: 0.72rem; text-align: center; color: #aaa;">© ${new Date().getFullYear()} Velora Luxury Skincare. You received this because you contacted us.</p>
+      </div>
+    `;
 
-    // Will throw if credentials are wrong
-    await transporter.verify();
-
-    const mailOptions = {
-      from: `"Velora Luxury Skincare" <${process.env.EMAIL_USER}>`,
+    // Send email using our helper service (which uses fast Resend HTTP API or fallback SMTP)
+    const emailRes = await sendEmail({
       to: contact.email,
       subject: `Re: ${contact.subject} — Velora Skincare`,
-      html: `
-        <div style="font-family: Georgia, serif; color: #333; padding: 30px; max-width: 620px; margin: 0 auto; border: 1px solid #f0eae1; background: #fcfbfa; border-radius: 8px;">
-          <div style="text-align: center; margin-bottom: 24px;">
-            <h1 style="color: #2d6a4f; font-family: serif; letter-spacing: 3px; margin: 0; font-size: 1.8rem;">VELORA</h1>
-            <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; color: #8a7e72; margin: 4px 0 0;">Luxury Skincare</p>
-          </div>
-          <hr style="border: 0; border-top: 1px solid #f0eae1; margin: 20px 0;" />
-          <p style="margin-bottom: 8px;">Dear <strong>${contact.name}</strong>,</p>
-          <p style="margin-bottom: 18px; color: #555; font-size: 0.9rem;">Thank you for getting in touch with us regarding <em>"${contact.subject}"</em>. Here is our response:</p>
-          <div style="background: #f7faf8; padding: 20px; border-left: 4px solid #2d6a4f; border-radius: 4px; margin: 16px 0; font-size: 0.95rem; line-height: 1.7; color: #333;">
-            ${replyMessage.replace(/\n/g, '<br />')}
-          </div>
-          <p style="margin-top: 20px;">Warm regards,<br /><strong>The Velora Team</strong></p>
-          <hr style="border: 0; border-top: 1px solid #f0eae1; margin: 24px 0;" />
-          <p style="font-size: 0.72rem; text-align: center; color: #aaa;">© ${new Date().getFullYear()} Velora Luxury Skincare. You received this because you contacted us.</p>
-        </div>
-      `,
-    };
-
-    await transporter.sendMail(mailOptions);
+      html: htmlContent
+    });
 
     // Mark as replied in DB
     await Contact.findByIdAndUpdate(req.params.id, { replied: true });
 
-    res.json({ success: true, message: `✅ Reply sent successfully to ${contact.email}` });
+    res.json({
+      success: true,
+      message: `✅ Reply sent successfully to ${contact.email} (${emailRes.provider})`
+    });
   } catch (err) {
     console.error('Reply email error:', err.message);
     res.status(500).json({
       success: false,
-      message: err.message.includes('EAUTH') || err.message.includes('535')
-        ? 'Gmail authentication failed. Check that EMAIL_USER and EMAIL_PASS (App Password) are correct in Render environment variables.'
-        : `Failed to send email: ${err.message}`
+      message: `Failed to send email: ${err.message}`
     });
   }
 });
