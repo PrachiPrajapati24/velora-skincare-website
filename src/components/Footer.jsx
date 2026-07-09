@@ -59,23 +59,46 @@ const Footer = () => {
     }, 300);
   };
 
+  const [subLoading, setSubLoading] = useState(false);
+
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    setSubMessage("");
-    
+    setSubMessage('');
     if (!email) return;
 
-    try {
-      const res = await api.post('/newsletter', { email });
-      if (res.data.success) {
-        setSubscribed(true);
-        setSubMessage(res.data.message || "Thank you for subscribing!");
-        setEmail("");
+    setSubLoading(true);
+
+    const attemptSubscribe = async (attempt = 1) => {
+      try {
+        const res = await api.post('/newsletter', { email });
+        if (res.data.success) {
+          setSubscribed(true);
+          setSubMessage(res.data.message || 'Thank you for subscribing!');
+          setEmail('');
+        }
+      } catch (err) {
+        const status = err.response?.status;
+        // 502/503/504 = Render server cold-starting — retry once after a short delay
+        if ((status === 502 || status === 503 || status === 504) && attempt === 1) {
+          setSubMessage('Server is waking up, retrying in 5 seconds...');
+          setTimeout(async () => {
+            setSubMessage('');
+            await attemptSubscribe(2);
+          }, 5000);
+          return;
+        }
+        setSubMessage(
+          status === 502 || status === 503 || status === 504
+            ? 'Server is starting up. Please try again in a moment.'
+            : err.response?.data?.message || 'Subscription failed. Please try again.'
+        );
+      } finally {
+        if (attempt !== 1) setSubLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      setSubMessage(err.response?.data?.message || "Subscription failed. Please try again.");
-    }
+    };
+
+    await attemptSubscribe(1);
+    setSubLoading(false);
   };
 
   return (
@@ -164,13 +187,20 @@ const Footer = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     className="newsletter-input"
+                    disabled={subLoading}
                   />
-                  <button type="submit" className="newsletter-btn" aria-label="Subscribe">
-                    &rarr;
+                  <button type="submit" className="newsletter-btn" aria-label="Subscribe" disabled={subLoading}>
+                    {subLoading ? (
+                      <span style={{ display: 'inline-block', width: '14px', height: '14px', border: '2px solid rgba(255,255,255,0.4)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                    ) : '→'}
                   </button>
                 </form>
               )}
-              {subMessage && !subscribed && <p className="newsletter-error">{subMessage}</p>}
+              {subMessage && !subscribed && (
+                <p className={subMessage.includes('waking') || subMessage.includes('starting') ? 'newsletter-info' : 'newsletter-error'}>
+                  {subMessage}
+                </p>
+              )}
             </div>
 
             <div className="footer-nav-column">

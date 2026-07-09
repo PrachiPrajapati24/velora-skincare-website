@@ -354,6 +354,18 @@
   text-align: left;
 }
 
+.newsletter-info {
+  font-family: "Cormorant Garamond", serif;
+  color: #c5a028;
+  font-size: 0.88rem;
+  margin: 5px 0 0 0;
+  text-align: left;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .footer-container {

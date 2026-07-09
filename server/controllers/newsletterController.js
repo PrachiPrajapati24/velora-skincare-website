@@ -13,11 +13,14 @@ const subscribeNewsletter = async (req, res, next) => {
       throw new Error('Please provide an email address');
     }
 
-    // Check if email already subscribed
+    // Check if email already subscribed — return gracefully instead of erroring
     const existing = await Newsletter.findOne({ email });
     if (existing) {
-      res.status(400);
-      throw new Error('You are already subscribed to our newsletter!');
+      return res.status(200).json({
+        success: true,
+        message: 'You\'re already part of the Velora Circle! 🌿 Check your inbox for your 10% OFF code.',
+        alreadySubscribed: true
+      });
     }
 
     // Save to Database
